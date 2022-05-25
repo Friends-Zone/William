@@ -22,6 +22,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+
 from pyrogram import Client
 from pyromod import listen
 import aiohttp
@@ -50,10 +51,13 @@ MOD_NOLOAD = []
 bot_start_time = time.time()
 
 
-if not HEROKU:
-    app2 = Client("userbot", phone_number=PHONE_NUMBER, api_id=API_ID, api_hash=API_HASH)
-else:
-    app2 = Client(SESSION_STRING, api_id=API_ID, api_hash=API_HASH)
+app2 = (
+    Client(SESSION_STRING, api_id=API_ID, api_hash=API_HASH)
+    if HEROKU
+    else Client(
+        "userbot", phone_number=PHONE_NUMBER, api_id=API_ID, api_hash=API_HASH
+    )
+)
 
 # Bot client
 app = Client("wbb", bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
@@ -90,7 +94,7 @@ def get_info(app, app2):
     BOT_ID = getme.id
     USERBOT_ID = getme2.id
     if getme.last_name:
-        BOT_NAME = getme.first_name + " " + getme.last_name
+        BOT_NAME = f"{getme.first_name} {getme.last_name}"
     else:
         BOT_NAME = getme.first_name
     BOT_USERNAME = getme.username
@@ -98,7 +102,7 @@ def get_info(app, app2):
     BOT_DC_ID = getme.dc_id
 
     if getme2.last_name:
-        USERBOT_NAME = getme2.first_name + " " + getme2.last_name
+        USERBOT_NAME = f"{getme2.first_name} {getme2.last_name}"
     else:
         USERBOT_NAME = getme2.first_name
     USERBOT_USERNAME = getme2.username

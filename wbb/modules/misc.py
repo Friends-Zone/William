@@ -129,8 +129,7 @@ async def random(_, message):
     try:
         if 1 < int(length) < 1000:
             alphabet = string.ascii_letters + string.digits
-            password = ''.join(secrets.choice(alphabet) for i in
-                               range(int(length)))
+            password = ''.join(secrets.choice(alphabet) for _ in range(int(length)))
             await message.reply_text(f"`{password}`")
         else:
             await message.reply_text('Specify A Length Between 1-1000')
@@ -200,7 +199,7 @@ async def cheat(_, message):
         await m.edit(f"`{data}`")
     except Exception as e:
         await m.edit(str(e))
-        print(str(e))
+        print(e)
 
 # Weather
 
@@ -273,7 +272,7 @@ async def json_fetch(_, message):
             await message.reply_text(f"[OUTPUT_TOO_LONG]({link})", disable_web_page_preview=True)
     except Exception as e:
         await message.reply_text(str(e))
-        print(str(e))
+        print(e)
 
 
 @app.on_message(filters.command('bun'))
@@ -282,6 +281,5 @@ async def bunn(_, message):
         await message.reply_to_message.reply_sticker('CAACAgUAAx0CWIlO9AABARyRYBhyjKXFATVhu7AGQwip3TzSFiMAAuMBAAJ7usBUIu2xBtXTmuweBA')
         await app.send_message(message.chat.id, text="Eat Bun")
         return
-    if not message.reply_to_message:
-        await message.reply_sticker('CAACAgUAAx0CWIlO9AABARyRYBhyjKXFATVhu7AGQwip3TzSFiMAAuMBAAJ7usBUIu2xBtXTmuweBA')
-        await app.send_message(message.chat.id, text="Eat Bun")
+    await message.reply_sticker('CAACAgUAAx0CWIlO9AABARyRYBhyjKXFATVhu7AGQwip3TzSFiMAAuMBAAJ7usBUIu2xBtXTmuweBA')
+    await app.send_message(message.chat.id, text="Eat Bun")

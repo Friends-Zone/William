@@ -82,7 +82,7 @@ async def kang(client, message):
         temp_file_path = await app.download_media(doc)
         image_type = imghdr.what(temp_file_path)
         if image_type not in SUPPORTED_TYPES:
-            await msg.edit("Format not supported! ({})".format(image_type))
+            await msg.edit(f"Format not supported! ({image_type})")
             return
         try:
             temp_file_path = await resize_file_to_sticker_size(temp_file_path)
@@ -90,7 +90,6 @@ async def kang(client, message):
             await msg.edit_text("Something wrong happened.")
             raise Exception(
                 f"Something went wrong while resizing the sticker (at {temp_file_path}); {e}")
-            return False
         sticker = await create_sticker(
                 await upload_document(
                     client,
@@ -108,7 +107,7 @@ async def kang(client, message):
     # Find an available pack & add the sticker to the pack; create a new pack if needed
     # Would be a good idea to cache the number instead of searching it every single time...
     packnum = 0
-    packname = "f" + str(message.from_user.id) + "_by_" + BOT_USERNAME
+    packname = f"f{str(message.from_user.id)}_by_{BOT_USERNAME}"
     try:
         while True:
             stickerset = await get_sticker_set_by_name(client, packname)
@@ -122,8 +121,10 @@ async def kang(client, message):
                         )
             elif stickerset.set.count >= MAX_STICKERS:
                 packnum += 1
-                packname = "f" + str(packnum) + "_" + \
-                    str(message.from_user.id) + "_by_"+BOT_USERNAME
+                packname = (
+                    (f"f{packnum}_" + str(message.from_user.id)) + "_by_"
+                ) + BOT_USERNAME
+
                 continue
             else:
                 await add_sticker_to_set(client, stickerset, sticker)

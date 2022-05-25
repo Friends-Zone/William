@@ -65,14 +65,13 @@ async def download_youtube_audio(url: str, m = 0):
         audio_file = ydl.prepare_filename(info_dict)
         basename = audio_file.rsplit(".", 1)[-2]
         if info_dict['ext'] == 'webm':
-            audio_file_opus = basename + ".opus"
+            audio_file_opus = f"{basename}.opus"
             ffmpeg.input(audio_file).output(audio_file_opus,
                                             codec="copy", loglevel='error').overwrite_output().run()
             os.remove(audio_file)
             audio_file = audio_file_opus
         thumbnail_url = info_dict['thumbnail']
-        thumbnail_file = basename + "." + \
-            get_file_extension_from_url(thumbnail_url)
+        thumbnail_file = (f"{basename}." + get_file_extension_from_url(thumbnail_url))
         title = info_dict['title']
         performer = info_dict['uploader']
         duration = int(float(info_dict['duration']))

@@ -111,29 +111,29 @@ async def welcome(_, message: Message):
             callback_data=f"pressed_button {captcha_answer} {member.id}"
         )
         temp_keyboard_1 = [correct_button]  # Button row 1
-        temp_keyboard_2 = []  # Botton row 2
-        temp_keyboard_3 = []
-        for i in range(2):
-            temp_keyboard_1.append(
-                InlineKeyboardButton(
-                    f"{wrong_answers[i]}",
-                    callback_data=f"pressed_button {wrong_answers[i]} {member.id}"
-                )
+        temp_keyboard_1.extend(
+            InlineKeyboardButton(
+                f"{wrong_answers[i]}",
+                callback_data=f"pressed_button {wrong_answers[i]} {member.id}",
             )
-        for i in range(2, 5):
-            temp_keyboard_2.append(
-                InlineKeyboardButton(
-                    f"{wrong_answers[i]}",
-                    callback_data=f"pressed_button {wrong_answers[i]} {member.id}"
-                )
+            for i in range(2)
+        )
+
+        temp_keyboard_2 = [
+            InlineKeyboardButton(
+                f"{wrong_answers[i]}",
+                callback_data=f"pressed_button {wrong_answers[i]} {member.id}",
             )
-        for i in range(5, 8):
-            temp_keyboard_3.append(
-                InlineKeyboardButton(
-                    f"{wrong_answers[i]}",
-                    callback_data=f"pressed_button {wrong_answers[i]} {member.id}"
-                )
+            for i in range(2, 5)
+        ]
+
+        temp_keyboard_3 = [
+            InlineKeyboardButton(
+                f"{wrong_answers[i]}",
+                callback_data=f"pressed_button {wrong_answers[i]} {member.id}",
             )
+            for i in range(5, 8)
+        ]
 
         shuffle(temp_keyboard_1)
         keyboard = [temp_keyboard_1, temp_keyboard_2, temp_keyboard_3]
@@ -252,10 +252,10 @@ async def callback_query_welcome_button(_, callback_query):
 
         """ send welcome message """
         await send_welcome_message(callback_query, pending_user_id)
-        return
     else:
         await callback_query.answer("This is not for you")
-        return
+
+    return
 
 
 async def kick_restricted_after_delay(delay, button_message: Message, user: User):

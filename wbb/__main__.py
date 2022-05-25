@@ -40,7 +40,7 @@ HELPABLE = {}
 async def start_bot():
     global COMMANDS_COUNT
     for module in ALL_MODULES:
-        imported_module = importlib.import_module("wbb.modules." + module)
+        imported_module = importlib.import_module(f"wbb.modules.{module}")
         if (
             hasattr(imported_module, "__MODULE__")
             and imported_module.__MODULE__
@@ -186,7 +186,7 @@ async def help_button(client, query):
     create_match = re.match(r"help_create", query.data)
 
     if mod_match:
-        module = mod_match.group(1)
+        module = mod_match[1]
         text = (
             "{} **{}**:\n".format(
                 "Here is the help for", HELPABLE[module].__MODULE__
@@ -203,7 +203,7 @@ async def help_button(client, query):
         )
 
     elif prev_match:
-        curr_page = int(prev_match.group(1))
+        curr_page = int(prev_match[1])
         await query.message.edit(
             text="Hi {first_name}. I am {bot_name}".format(
                 first_name=query.from_user.first_name,
@@ -216,7 +216,7 @@ async def help_button(client, query):
         )
 
     elif next_match:
-        next_page = int(next_match.group(1))
+        next_page = int(next_match[1])
         await query.message.edit(
             text="Hi {first_name}. I am {bot_name}".format(
                 first_name=query.from_user.first_name,
